@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mode d'emploi · Studio Bruno & Steph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Permanent+Marker&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#141416">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+/* Mise en page : une notice de matériel de studio. Colonne de lecture, chaque section = un élément de la console reproduit à l'identique, avec son explication. Look sombre unique, comme l'app. */
+:root{color-scheme:dark;
+--room:#141416;--panel:#232327;--edge:#0d0d0f;--silk:#d9d6cc;--silk2:#8f8c86;--white:#efece4;
+--tape:#e9dfc4;--tape-ink:#24201a;--lcd:#0f1a12;--lcd-ink:#8ff0a4;--onair:#ff3b2f;
+--l-off:#3a3a40;--l-encours:#ffb020;--l-attente:#3fa9ff;--l-faite:#3ddc6e;--l-conf:#ff7a1a;--l-master:#b07bff;
+--f-silk:"Barlow Condensed",Arial Narrow,sans-serif;--f-body:Barlow,system-ui,sans-serif;--f-tape:"Permanent Marker","Comic Sans MS",cursive;--f-lcd:"Share Tech Mono",ui-monospace,monospace}
+*{box-sizing:border-box;min-width:0}
+body{background:var(--room);color:var(--silk);font:16px/1.6 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:22px}
+h1,h2{margin:0;font-family:var(--f-silk);text-transform:uppercase;color:var(--white);text-wrap:balance}
+p{margin:0}
+a{color:var(--lcd-ink)}
+.silk{font:600 11px/1 var(--f-silk);letter-spacing:.16em;text-transform:uppercase;color:var(--silk2)}
+/* en-tête façon rack */
+.rack{margin-top:16px;padding:22px 20px;border-radius:6px;border:1px solid var(--edge);background:linear-gradient(180deg,#2e2e33,#1d1d20);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 30px rgba(0,0,0,.45);display:grid;gap:14px}
+.brand{display:flex;align-items:center;gap:14px}
+.rec{width:16px;height:16px;flex:none;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a7a,#e0261a 55%,#7a0e08);box-shadow:0 0 10px 2px rgba(255,59,47,.55)}
+h1{font-size:clamp(26px,5vw,36px);letter-spacing:.08em;line-height:1}
+.lead{max-width:62ch;color:var(--silk)}
+.lcd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:12px 14px;border-radius:6px;background:var(--lcd);border:1px solid #000;box-shadow:inset 0 2px 8px rgba(0,0,0,.9);font:400 15px var(--f-lcd);color:var(--lcd-ink);overflow-wrap:anywhere}
+.lcd button{font:600 12px var(--f-silk);letter-spacing:.12em;text-transform:uppercase}
+/* sections */
+section{display:grid;gap:12px;padding:20px;border-radius:6px;border:1px solid var(--edge);background:linear-gradient(180deg,#26262b,#202024)}
+h2{font-size:20px;letter-spacing:.1em;display:flex;align-items:center;gap:10px}
+h2 .led{width:9px;height:9px;border-radius:50%;background:var(--l-faite);box-shadow:0 0 7px var(--l-faite)}
+.demo{padding:14px;border-radius:5px;background:#18181b;box-shadow:inset 0 1px 4px rgba(0,0,0,.7);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+ul{margin:0;padding-left:20px;display:grid;gap:6px}
+li::marker{color:var(--silk2)}
+strong{color:var(--white);font-weight:600}
+.tip{font-size:14px;color:var(--silk2);border-left:2px solid var(--l-encours);padding-left:12px}
+/* composants copiés de l'app */
+.btn{position:relative;border:1px solid #0b0b0d;border-radius:5px;background:linear-gradient(180deg,#3a3a40,#2a2a2f);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 2px 0 #0b0b0d;color:#cfccc4;min-height:38px;padding:0 12px 0 26px;font:600 12px/1 var(--f-silk);letter-spacing:.12em;text-transform:uppercase;display:inline-flex;align-items:center;cursor:default}
+.btn::before{content:"";position:absolute;left:10px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--c,var(--l-off))}
+.btn.on{transform:translateY(2px);box-shadow:none;color:#fff}.btn.on::before{box-shadow:0 0 8px var(--c)}
+.btn small{margin-left:6px;font:400 13px var(--f-lcd);letter-spacing:0;color:var(--silk2)}
+.tape{display:inline-block;padding:5px 14px 4px;background:var(--tape);color:var(--tape-ink);transform:rotate(-.8deg);font:400 20px/1.15 var(--f-tape);clip-path:polygon(0 6%,3% 0,97% 4%,100% 0,99% 94%,96% 100%,3% 96%,0 100%)}
+.art{font:500 12px/1.3 var(--f-silk);letter-spacing:.1em;text-transform:uppercase;color:var(--silk2)}
+.play{display:grid;justify-items:center;gap:5px}
+.play i{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 40% 30%,#4a4a51,#2b2b30 70%);border:1px solid #0b0b0d;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 2px 0 #0b0b0d,0 0 0 3px #19191c}
+.play svg{width:12px;height:12px;margin-left:2px;fill:var(--l-faite);filter:drop-shadow(0 0 4px var(--l-faite))}
+.st{--c:var(--l-off);display:inline-flex;align-items:center;gap:9px;min-height:38px;padding:5px 12px 5px 10px;border-radius:5px;border:1px solid #0b0b0d;background:#1d1d21;box-shadow:inset 0 1px 3px rgba(0,0,0,.7)}
+.st::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 7px var(--c)}
+.st.off::before{box-shadow:none}
+.st span{display:grid;gap:2px}
+.st em{font:600 10px/1 var(--f-silk);font-style:normal;letter-spacing:.18em;text-transform:uppercase;color:var(--silk2)}
+.st b{font:500 13px/1.1 var(--f-body);color:#e8e5dd}
+.onair{font:700 11px/1 var(--f-silk);letter-spacing:.2em;padding:5px 8px;border-radius:3px;color:#fff;background:var(--onair);box-shadow:0 0 12px rgba(255,59,47,.6)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:8px}
+.legend div{display:flex;gap:10px;align-items:center;font-size:14px}
+.legend i{width:9px;height:9px;flex:none;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
+.legend i.off{box-shadow:none}
+.card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 14px;align-items:center;width:100%}
+.card .row{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px}
+.foot{text-align:center;font:400 13px var(--f-lcd);color:var(--silk2)}
+@media(prefers-reduced-motion:no-preference){.rec{animation:pulse 2.4s ease-in-out infinite}@keyframes pulse{50%{box-shadow:0 0 4px 1px rgba(255,59,47,.3)}}}
+
+.back{justify-self:start;display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:5px;border:1px solid #0b0b0d;background:linear-gradient(180deg,#3a3a40,#2a2a2f);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 2px 0 #0b0b0d;font:600 13px var(--f-silk);letter-spacing:.12em;text-transform:uppercase;color:#e8e5dd;text-decoration:none}
+.back:hover{color:#fff}
+:focus-visible{outline:2px solid var(--l-encours);outline-offset:2px}
+html{background:var(--room)}body{margin:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="rack">
+    <div class="brand"><span class="rec" aria-hidden="true"></span><div><h1>Mode d'emploi du Studio</h1><div class="silk" style="margin-top:6px">Pour Bruno · Studio Bruno &amp; Steph</div></div></div>
+    <p class="lead">L'appli est notre feuille de session commune : un morceau par ligne, où en est la basse, les percus et le master, et qui a le projet ouvert dans Logic. Tout ce que tu changes, Steph le voit tout de suite, et inversement.</p>
+    <a class="back" href="./">← Retour à la console</a>
+    <p class="tip">Sur iPhone : ouvre le lien dans Safari, touche Partager, puis « Sur l'écran d'accueil ». L'appli s'ouvre alors comme une vraie app.</p>
+  </header>
+
+  <section>
+    <h2><span class="led"></span>D'abord : dis qui tu es</h2>
+    <div class="demo"><span class="silk">Opérateur</span><span class="btn">Steph</span><span class="btn on" style="--c:var(--l-faite)">Bruno</span></div>
+    <p>En haut à droite, appuie sur <strong>Bruno</strong> (le voyant passe au vert). C'est à faire une seule fois par appareil. Sans ça, l'appli ne sait pas qui ouvre un projet et le bouton ▶ refuse de marcher.</p>
+  </section>
+
+  <section>
+    <h2><span class="led"></span>Les trois VU-mètres</h2>
+    <p>Sous le titre, trois cadrans à aiguille : <strong>Basse faite</strong>, <strong>Percus faites</strong> et <strong>Masterisés</strong>. L'aiguille monte à mesure que les morceaux avancent, et le chiffre en dessous donne le compte exact (par exemple 12/49). Quand l'aiguille est dans le rouge, on a presque tout fini.</p>
+  </section>
+
+  <section>
+    <h2><span class="led"></span>Chercher et filtrer</h2>
+    <div class="demo" style="display:grid">
+      <div class="lcd">&gt; caravan</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px"><span class="btn on" style="--c:var(--l-encours)">Tous<small>49</small></span><span class="btn">Basse à faire<small>25</small></span><span class="btn">On air<small>3</small></span><span class="btn">Conflits<small>0</small></span></div>
+    </div>
+    <p>L'écran vert sert à chercher un titre ou un artiste. Les poussoirs dessous trient la liste ; le chiffre indique combien de morceaux sont concernés. Pour toi, le plus utile : <strong>Basse à faire</strong>, <strong>Attente d'avis</strong> (Steph attend ton retour) et <strong>On air</strong> (projets ouverts en ce moment).</p>
+  </section>
+
+  <section>
+    <h2><span class="led"></span>Une tranche = un morceau</h2>
+    <div class="demo">
+      <div class="card">
+        <div><div class="tape">Back To Black</div><div class="art" style="margin-top:8px">Amy Winehouse · modifié le 9 nov. 2026</div></div>
+        <div class="play"><i><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z"/></svg></i><span class="silk">Logic</span></div>
+        <div class="row"><span class="st" style="--c:var(--l-faite)"><span><em>Basse</em><b>Faite</b></span></span><span class="st" style="--c:var(--l-encours)"><span><em>Percus</em><b>En cours</b></span></span><span class="st off"><span><em>Master</em><b>—</b></span></span></div>
+      </div>
+    </div>
+    <ul>
+      <li>L'<strong>étiquette</strong> au feutre donne le titre ; dessous, l'artiste et la date de la dernière version enregistrée.</li>
+      <li>Les trois <strong>voyants</strong> disent où en est chaque partie. Appuie sur un voyant pour le changer : une petite liste s'ouvre, tu choisis, c'est enregistré.</li>
+      <li><strong>Détails</strong>, sous la tranche, ouvre la prochaine action à faire, qui s'en charge, les remarques et l'emplacement du projet.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="led"></span>La couleur des voyants</h2>
+    <div class="legend">
+      <div><i class="off" style="--c:var(--l-off)"></i>Éteint : à faire (ou pas encore de master)</div>
+      <div><i style="--c:var(--l-encours)"></i>Ambre : en cours / mix en cours</div>
+      <div><i style="--c:var(--l-attente)"></i>Bleu : en attente d'avis / en validation</div>
+      <div><i style="--c:var(--l-conf)"></i>Orange : à confirmer</div>
+      <div><i style="--c:var(--l-faite)"></i>Vert : fait</div>
+      <div><i style="--c:var(--l-master)"></i>Violet : masterisé</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="led"></span>Ouvrir un projet dans Logic</h2>
+    <p>Le petit bouton rond <strong>▶ Logic</strong> à droite de chaque morceau ouvre directement la version de travail dans Logic sur ton Mac. Il passe par un raccourci Apple appelé « Ouvrir dans Logic » : s'il ne se passe rien, c'est que ce raccourci n'est pas encore installé sur ton Mac. Demande à Steph de te l'envoyer.</p>
+    <p>En même temps, l'appli allume la lampe <strong>ON AIR</strong> sur le morceau, pour que Steph sache que tu es dessus.</p>
+  </section>
+
+  <section>
+    <h2><span class="led" style="background:var(--onair);box-shadow:0 0 7px var(--onair)"></span>On air : qui est sur quoi</h2>
+    <div class="demo"><span class="onair">ON AIR</span><span><strong>Steph</strong> est dessus depuis 20:01</span><span class="btn" style="padding-left:12px">Ouvrir quand même</span><span class="btn" style="padding-left:12px">Marquer libre</span></div>
+    <ul>
+      <li>Quand tu as fini et enregistré, appuie sur <strong>J'ai fini</strong> : la lampe s'éteint.</li>
+      <li>Si c'est Steph qui est dessus, évite d'ouvrir le même projet en même temps : iCloud créerait une copie en double. Si tu sais qu'il a terminé, <strong>Marquer libre</strong> éteint la lampe.</li>
+      <li>La lampe s'éteint toute seule au bout de 4 heures, au cas où on oublie.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span class="led" style="background:var(--onair);box-shadow:0 0 7px var(--onair)"></span>Le voyant CLIP</h2>
+    <div class="demo"><span class="st" style="--c:var(--onair)"><span><em>Clip</em><b>Conflit iCloud</b></span></span></div>
+    <p>Il clignote quand un même projet a été enregistré depuis deux Mac en même temps et qu'iCloud a fabriqué une copie de conflit. Une vérification automatique le repère dans le dossier partagé. Ne supprime rien : regarde avec Steph laquelle des deux versions garder.</p>
+  </section>
+
+  <a class="back" href="./" style="justify-self:center">← Retour à la console</a>
+  <p class="foot">— les nouveaux morceaux et versions apparaissent tout seuls, l'appli se met à jour automatiquement —</p>
+</div>
+
+</body>
+</html>
