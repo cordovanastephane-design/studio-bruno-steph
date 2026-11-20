@@ -1,0 +1,8 @@
+{
+ "name": "Studio Bruno & Steph",
+ "short_name": "Studio",
+ "start_url": "./",
+ "display": "standalone",
+ "background_color": "#16141b",
+ "theme_color": "#16141b"
+}
