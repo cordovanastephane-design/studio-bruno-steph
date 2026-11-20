@@ -53,6 +53,13 @@ h1 small{display:block;margin-top:5px;font-size:11px;letter-spacing:.3em;color:v
 
 h1 .nm{display:block;font:400 clamp(24px,4.4vw,46px)/1.1 Michroma,"Barlow Condensed",sans-serif;letter-spacing:.06em;color:#f4f2ea;text-shadow:0 0 18px rgba(255,255,255,.18),0 2px 0 #000;text-wrap:balance}
 h1 small{margin-top:10px}
+/* logo : clé de fa rétroéclairée dans une bague chromée */
+.badge{--s:clamp(54px,6.2vw,76px);width:var(--s);height:var(--s);flex:none;border-radius:50%;position:relative;display:grid;place-items:center;
+ background:conic-gradient(from 20deg,#f2f2f4,#8d8f96,#e6e7ea,#6b6d73,#d9dadd,#8d8f96,#f2f2f4,#7a7c82,#e6e7ea,#6b6d73,#f2f2f4);
+ box-shadow:0 3px 8px rgba(0,0,0,.6),inset 0 1px 1px rgba(255,255,255,.7)}
+.badge::before{content:"";position:absolute;inset:9%;border-radius:50%;background:radial-gradient(circle at 50% 35%,#2b2b31,#0c0c0e 70%);box-shadow:inset 0 3px 6px rgba(0,0,0,.9),0 0 0 1px rgba(0,0,0,.6)}
+.badge::after{content:"";position:absolute;inset:9%;border-radius:50%;background:linear-gradient(160deg,rgba(255,255,255,.16),transparent 45%);pointer-events:none}
+.badge svg{position:relative;width:62%;height:62%;overflow:visible;filter:drop-shadow(0 0 3px rgba(255,190,90,.9)) drop-shadow(0 0 10px rgba(255,150,40,.55))}
 /* sélecteur Steph / Bruno : deux poussoirs lumineux */
 .me{display:flex;align-items:center;gap:10px}
 .seg{display:inline-flex;gap:6px;padding:5px;background:#141416;border-radius:8px;box-shadow:inset 0 2px 4px rgba(0,0,0,.7)}
@@ -176,6 +183,8 @@ button.st:hover{border-color:#47474e}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#141416">
 <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
@@ -185,6 +194,7 @@ button.st:hover{border-color:#47474e}
   <div class="top">
     <div class="brand">
       <span class="rec" aria-hidden="true"><i></i><span class="silk">Rec</span></span>
+      <span class="badge" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="#fff4dc" transform="translate(-3.5 0)"><path d="M14 26C14 14 26 7 36 9C48 11 54 22 50 34C46 46 32 54 14 59L13 56.5C27 51 38 43 41 33C44 23 40 13 31 13C24 13 19 17 18 21Z"/><circle cx="18.5" cy="25.5" r="7"/><circle cx="56" cy="20" r="3.6"/><circle cx="56" cy="34" r="3.6"/></g></svg></span>
       <h1><span class="nm">Studio Bruno &amp; Steph</span><small>Feuille de session · Rack 1</small></h1>
     </div>
     <div class="me"><a class="help" href="aide.html" title="Mode d'emploi" aria-label="Mode d'emploi"><span class="knob">?</span><span class="silk">Aide</span></a><span class="silk">Opérateur</span>
