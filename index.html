@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Bruno & Steph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: un outil de studio, sobre et vif, qu'on ouvre dix fois par jour.
+   IDEA: la feuille de session d'un studio : une piste par morceau, des voyants par instrument.
+   PICTURE: la liste elle-même, avec des « voyants » colorés basse / percus / master et un gros bouton d'ouverture.
+   COLOUR and TYPE: fond papier blanc cassé, encre presque noire, accent corail « record » ; Archivo + Inter.
+   LAYOUT: barre d'en-tête avec compteurs en vumètres, filtres en pilules, cartes en une colonne (deux au-delà de 1100px). */
+:root{color-scheme:light dark;
+--bg:light-dark(#f4f3ef,#121116);--card:light-dark(#ffffff,#1c1b22);--ink:light-dark(#16141b,#f1eff6);--mute:light-dark(#6b6873,#a19eab);
+--line:light-dark(#e3e1da,#2c2a34);--rec:#ff4d2e;--rec-ink:#ffffff;
+--s-afaire:light-dark(#ebe9e3,#2b2a31);--s-afaire-i:light-dark(#4a4752,#c9c6d1);
+--s-encours:light-dark(#dbe6ff,#1d2b52);--s-encours-i:light-dark(#1f4fd1,#9db8ff);
+--s-attente:light-dark(#fff1c2,#3d3313);--s-attente-i:light-dark(#8a6400,#ffd66b);
+--s-faite:light-dark(#d6f3e2,#163826);--s-faite-i:light-dark(#137343,#7fe0a8);
+--s-conf:light-dark(#ffe2c7,#3f2a16);--s-conf-i:light-dark(#b25500,#ffb36b);
+--s-master:light-dark(#ebdfff,#2e2148);--s-master-i:light-dark(#6a2fd6,#c7a6ff)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Archivo,Inter,sans-serif;margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--rec);outline-offset:2px}
+header{--hb:#16141b;--hf:#f4f3ef;background:var(--hb);color:var(--hf);padding:22px max(4vw,16px) 20px}
+.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;max-width:1240px;margin:0 auto}
+h1{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.01em;line-height:1.05;display:flex;align-items:center;gap:12px}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--rec);box-shadow:0 0 0 4px color-mix(in srgb,var(--rec) 30%,transparent)}
+.me{display:flex;align-items:center;gap:8px;font-size:14px}
+.seg{display:inline-flex;background:color-mix(in srgb,var(--hf) 14%,transparent);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;padding:8px 16px;border-radius:999px;min-height:40px;color:inherit;font-weight:600}
+.seg button[aria-pressed=true]{background:var(--hf);color:var(--hb)}
+.meters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 28px;max-width:1240px;margin:20px auto 0}
+.meter b{font:800 clamp(24px,3.4vw,32px)/1 Archivo,sans-serif;display:block}
+.meter span{font-size:13px;opacity:.75}
+.bar{height:8px;border-radius:4px;background:color-mix(in srgb,var(--hf) 18%,transparent);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px;transition:width .4s}
+main{max-width:1240px;margin:0 auto;padding:18px max(4vw,16px) 60px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.search{flex:1 1 220px;min-height:44px;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:0 14px;font-size:16px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;min-height:40px;font-size:14px;font-weight:500}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip small{opacity:.6;margin-left:4px}
+.note{font-size:14px;color:var(--mute);margin:6px 0 14px}
+.list{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media(min-width:1100px){.list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 14px;align-items:center}
+.card.locked{border-color:color-mix(in srgb,var(--rec) 55%,var(--line))}
+.ttl{font:700 18px/1.2 Archivo,sans-serif}
+.art{font-size:14px;color:var(--mute)}
+.lights{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.st{border:0;border-radius:10px;padding:6px 10px 6px 8px;min-height:36px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;position:relative}
+.st em{font-style:normal;font-weight:500;opacity:.75}
+.st::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.k-afaire{background:var(--s-afaire);color:var(--s-afaire-i)}.k-encours{background:var(--s-encours);color:var(--s-encours-i)}
+.k-attente{background:var(--s-attente);color:var(--s-attente-i)}.k-faite{background:var(--s-faite);color:var(--s-faite-i)}
+.k-conf{background:var(--s-conf);color:var(--s-conf-i)}.k-master{background:var(--s-master);color:var(--s-master-i)}
+.open{display:inline-flex;align-items:center;gap:8px;background:var(--rec);color:var(--rec-ink);text-decoration:none;font-weight:700;border-radius:12px;padding:0 16px;min-height:44px;white-space:nowrap;border:0}
+.open svg{width:14px;height:14px}
+.open.off{background:var(--s-afaire);color:var(--mute);pointer-events:none}
+.lock{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;background:color-mix(in srgb,var(--rec) 10%,transparent);border-radius:10px;padding:8px 10px}
+.lock button,.lock a{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 10px;min-height:36px;font-size:13px;font-weight:600;text-decoration:none;color:var(--ink)}
+.more{grid-column:1/-1;border:0;background:none;padding:0;color:var(--mute);font-size:13px;text-align:left;min-height:28px}
+.det{grid-column:1/-1;display:grid;gap:10px;border-top:1px solid var(--line);padding-top:12px;font-size:14px}
+.det label{display:grid;gap:4px;font-weight:600;font-size:13px;color:var(--mute)}
+.det input,.det select{min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:0 12px;font-size:16px;font-weight:400;color:var(--ink)}
+.det p{margin:0;color:var(--mute)}
+.path{font-size:12px;overflow-wrap:anywhere;color:var(--mute)}
+.menu{position:absolute;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.18);padding:6px;display:grid;min-width:190px}
+.menu button{border:0;background:none;text-align:left;padding:10px 12px;border-radius:8px;min-height:40px;font-size:14px;display:flex;gap:8px;align-items:center}
+.menu button:hover{background:var(--bg)}
+.menu button::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c)}
+.empty{text-align:center;padding:50px 10px;color:var(--mute)}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
+.toast.on{opacity:1}
+@media(max-width:600px){.meters{grid-template-columns:minmax(0,1fr)}.card{grid-template-columns:minmax(0,1fr)}.open{justify-content:center}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16141b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1><span class="dot" aria-hidden="true"></span>Studio Bruno &amp; Steph</h1>
+    <div class="me"><span>Je suis</span>
+      <div class="seg" role="group" aria-label="Qui utilise l'application">
+        <button type="button" data-me="Steph" aria-pressed="false">Steph</button>
+        <button type="button" data-me="Bruno" aria-pressed="false">Bruno</button>
+      </div>
+    </div>
+  </div>
+  <div class="meters" id="meters"></div>
+</header>
+<main>
+  <div class="tools"><input class="search" id="q" type="search" placeholder="Chercher un morceau ou un artiste" aria-label="Chercher"></div>
+  <div class="chips" id="chips" role="group" aria-label="Filtres"></div>
+  <p class="note" id="note">Chargement des morceaux…</p>
+  <div class="list" id="list"></div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+{
+const ST={"À faire":"afaire","En cours":"encours","En attente d'avis":"attente","Faite":"faite","À confirmer":"conf"};
+const MS={"—":"afaire","Mix en cours":"encours","En validation":"attente","Masterisé":"master"};
+const COL={afaire:"#9b98a3",encours:"#2f6bff",attente:"#f2b705",faite:"#1f9d55",conf:"#ff8a00",master:"#7a3cff"};
+const LOCK_H=4, SHORTCUT="Ouvrir dans Logic";
+let db=null, songs=[], filter="tous", q="", openId=null, menu=null, me=null;
+try{me=localStorage.getItem("studio-me")}catch(e){}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const toast=t=>{const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),2600)};
+const lockOf=s=>{const o=s.ouvert;if(!o||!o.par||!o.depuis)return null;const age=(Date.now()-Date.parse(o.depuis))/36e5;return age<LOCK_H?o:null};
+const hhmm=iso=>new Date(iso).toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+const frDate=d=>d?new Date(d+"T12:00:00").toLocaleDateString("fr-FR",{day:"numeric",month:"short",year:"numeric"}):"";
+const link=s=>"shortcuts://run-shortcut?name="+encodeURIComponent(SHORTCUT)+"&input=text&text="+encodeURIComponent(s.chemin||"");
+const FILTERS=[["tous","Tous",()=>true],["basse","Basse à faire",s=>s.basse==="À faire"],["percus","Percus à faire",s=>s.percus==="À faire"],
+["cours","En cours",s=>s.basse==="En cours"||s.percus==="En cours"],["avis","Attente d'avis",s=>s.basse==="En attente d'avis"||s.percus==="En attente d'avis"],
+["conf","À confirmer",s=>s.basse==="À confirmer"||s.percus==="À confirmer"],["master","Masterisés",s=>s.master==="Masterisé"],
+["ouverts","Ouverts",s=>!!lockOf(s)],["conflits","Conflits",s=>!!s.conflit]];
+
+function setMe(v){me=v;try{localStorage.setItem("studio-me",v)}catch(e){}paintMe();render()}
+function paintMe(){document.querySelectorAll("[data-me]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.me===me)))}
+
+function meters(){
+  const n=songs.length||1,c=k=>songs.filter(k).length;
+  const m=[["Basse faite",c(s=>s.basse==="Faite"),COL.faite],["Percus faites",c(s=>s.percus==="Faite"),COL.encours],["Masterisés",c(s=>s.master==="Masterisé"),COL.master]];
+  $("#meters").innerHTML=m.map(([l,v,col])=>`<div class="meter"><b>${v}<span> / ${songs.length}</span></b><span>${l}</span><div class="bar"><i style="width:${v/n*100}%;background:${col}"></i></div></div>`).join("");
+}
+function chips(){
+  $("#chips").innerHTML=FILTERS.map(([k,l,f])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${filter===k}">${l}<small>${songs.filter(f).length}</small></button>`).join("");
+}
+function stBtn(s,field,label){
+  const v=s[field]||"—",k=(field==="master"?MS:ST)[v]||"afaire";
+  return `<button type="button" class="st k-${k}" data-menu="${field}" data-id="${s.id}" aria-haspopup="true"><em>${label}</em> ${esc(v)}</button>`;
+}
+function card(s){
+  const lk=lockOf(s),mine=lk&&lk.par===me,other=lk&&!mine,isOpen=openId===s.id;
+  let h=`<article class="card${lk?" locked":""}" data-card="${s.id}"><div><h3 class="ttl">${esc(s.titre)}</h3><div class="art">${esc(s.artiste||"")}${s.artiste&&s.maj?" · ":""}${s.maj?"modifié le "+frDate(s.maj):""}</div></div>`;
+  h+=s.chemin?`<a class="open" href="${esc(link(s))}" data-open="${s.id}"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"/></svg>Ouvrir dans Logic</a>`:`<span class="open off">Pas de projet</span>`;
+  h+=`<div class="lights">${stBtn(s,"basse","Basse")}${stBtn(s,"percus","Percus")}${stBtn(s,"master","Master")}${s.conflit?`<span class="st k-conf"><em>⚠</em> Conflit iCloud</span>`:""}</div>`;
+  if(lk)h+=`<div class="lock">${mine?`Ouvert par toi depuis ${hhmm(lk.depuis)}.`:`<strong>${esc(lk.par)}</strong>&nbsp;l'a ouvert à ${hhmm(lk.depuis)}.`} ${mine?`<button type="button" data-free="${s.id}">J'ai fini</button>`:`<a href="${esc(link(s))}" data-force="${s.id}">Ouvrir quand même</a><button type="button" data-free="${s.id}">Marquer libre</button>`}</div>`;
+  h+=`<button class="more" type="button" data-more="${s.id}" aria-expanded="${isOpen}">${isOpen?"Masquer les détails":"Détails"+(s.action?" · "+esc(s.action):"")}</button>`;
+  if(isOpen)h+=`<div class="det">
+    <label>Prochaine action<input data-edit="action" data-id="${s.id}" value="${esc(s.action)}" placeholder="Ex. : refaire le pont à la basse"></label>
+    <label>Qui<select data-edit="qui" data-id="${s.id}">${["","Steph","Bruno","Les deux"].map(o=>`<option ${s.qui===o?"selected":""} value="${o}">${o||"—"}</option>`).join("")}</select></label>
+    ${s.remarques?`<p>${esc(s.remarques)}</p>`:""}
+    <p class="path">${esc(s.chemin||"")}${s.versions>1?` · ${s.versions} versions regroupées`:""}</p></div>`;
+  return h+`</article>`;
+}
+function render(){
+  meters();chips();
+  const f=FILTERS.find(x=>x[0]===filter)[2],qq=q.trim().toLowerCase();
+  const rows=songs.filter(f).filter(s=>!qq||(s.titre+" "+(s.artiste||"")).toLowerCase().includes(qq));
+  $("#list").innerHTML=rows.length?rows.map(card).join(""):`<div class="empty">Aucun morceau pour ce filtre.</div>`;
+  if(songs.length)$("#note").textContent=me?`${rows.length} morceau${rows.length>1?"x":""} · un clic sur « Ouvrir dans Logic » te réserve le projet pendant que tu travailles.`:"Choisis en haut qui tu es (Steph ou Bruno) pour que l'autre sache qui a ouvert un projet.";
+}
+async function save(id,fields){
+  if(!db){toast("Modification impossible : pas de connexion aux données.");return}
+  const s=songs.find(x=>x.id===id);if(s)Object.assign(s,fields);render();
+  const {error}=await db.from("morceaux").update(fields).eq("id",id);
+  if(error)toast("Enregistrement impossible, réessaie.");
+}
+function closeMenu(){if(menu){menu.remove();menu=null}}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button,a");
+  if(!t){closeMenu();return}
+  if(menu&&!menu.contains(t)&&!t.dataset.menu)closeMenu();
+  if(t.dataset.me)return setMe(t.dataset.me);
+  if(t.dataset.f){filter=t.dataset.f;return render()}
+  if(t.dataset.more){openId=openId===t.dataset.more?null:t.dataset.more;return render()}
+  if(t.dataset.pick){const{id,field}=menu.dataset;closeMenu();const s=songs.find(x=>x.id===id);if(s&&s[field]!==t.dataset.pick)save(id,{[field]:t.dataset.pick});return}
+  if(t.dataset.menu){
+    const was=menu&&menu.dataset.id===t.dataset.id&&menu.dataset.field===t.dataset.menu;closeMenu();if(was)return;
+    const opts=t.dataset.menu==="master"?MS:ST;
+    menu=document.createElement("div");menu.className="menu";menu.dataset.id=t.dataset.id;menu.dataset.field=t.dataset.menu;
+    menu.innerHTML=Object.entries(opts).map(([l,k])=>`<button type="button" data-pick="${esc(l)}" style="--c:${COL[k]}">${esc(l)}</button>`).join("");
+    menu.style.left=t.offsetLeft+"px";menu.style.top=(t.offsetTop+t.offsetHeight+6)+"px";t.parentElement.appendChild(menu);return;
+  }
+  if(t.dataset.free){save(t.dataset.free,{ouvert:null});return}
+  if(t.dataset.open){
+    const s=songs.find(x=>x.id===t.dataset.open),lk=s&&lockOf(s);
+    if(!me){e.preventDefault();toast("Choisis d'abord en haut : Steph ou Bruno.");return}
+    if(lk&&lk.par!==me){e.preventDefault();toast(lk.par+" a ce projet ouvert. Utilise « Ouvrir quand même » si besoin.");return}
+    save(s.id,{ouvert:{par:me,depuis:new Date().toISOString()}});return;
+  }
+  if(t.dataset.force){if(!me){e.preventDefault();toast("Choisis d'abord en haut : Steph ou Bruno.");return}save(t.dataset.force,{ouvert:{par:me,depuis:new Date().toISOString()}});return}
+});
+document.addEventListener("change",e=>{const t=e.target;if(t.dataset.edit){const s=songs.find(x=>x.id===t.dataset.id);if(s&&s[t.dataset.edit]!==t.value)save(t.dataset.id,{[t.dataset.edit]:t.value})}});
+$("#q").addEventListener("input",e=>{q=e.target.value;render()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu()});
+paintMe();
+let lastLoad=0;
+async function load(){
+  const {data,error}=await db.from("morceaux").select("*");
+  if(error){$("#note").textContent="Lecture des données impossible pour le moment.";return}
+  lastLoad=Date.now();
+  songs=(data||[]).sort((a,b)=>a.titre.localeCompare(b.titre,"fr",{sensitivity:"base"}));
+  if(!songs.length){$("#note").textContent="Aucun morceau pour l'instant.";$("#list").innerHTML="";meters();chips();return}
+  if(menu)return;const a=document.activeElement;if(a&&a.dataset&&a.dataset.edit)return;
+  render();
+}
+(()=>{
+  const cfg=window.STUDIO_CONFIG||{};
+  if(!window.supabase||!cfg.url||!cfg.key){$("#note").textContent="Configuration manquante (adresse de la base).";return}
+  db=window.supabase.createClient(cfg.url,cfg.key);
+  const timer=setTimeout(()=>{if(!songs.length)$("#note").textContent="Les données ne répondent pas encore. Vérifie ta connexion."},10000);
+  load().then(()=>clearTimeout(timer));
+  db.channel("morceaux").on("postgres_changes",{event:"*",schema:"public",table:"morceaux"},()=>load()).subscribe();
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&Date.now()-lastLoad>5000)load()});
+  setInterval(()=>{if(!document.hidden)load()},60000);
+})();
+}
+</script>
+</body>
+</html>
